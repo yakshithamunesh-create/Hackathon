@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>FilmFoundry AI</title>
+    <style>
+        /* --- Basic modern layout + small utility system --- */
+        :root {
+            --bg: #158a8a;
+            --card: #8d860c;
+            --muted: #2a739b;
+            --accent: #7c3aed;
+            --glass: rgba(85, 68, 214, 0.372);
+            --glass-2: rgba(196, 52, 26, 0.836);
+            --success: #10b981;
+            --danger: #ef4444;
+            --maxw: 1200px;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background: linear-gradient(180deg, #071023 0%, #081226 60%);
+            color: #e6eef8
+        }
+
+        .app {
+            max-width: var(--maxw);
+            margin: 28px auto;
+            padding: 22px;
+            border-radius: 14px;
+            background: linear-gradient(180deg, rgba(210, 35, 35, 0.02), rgba(255, 255, 255, 0.01));
+            box-shadow: 0 8px 40px rgba(111, 127, 196, 0.6)
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 18px
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px
+        }
+
+        .flex {
+            display: flex;
+            gap: 16px
+        }
+
+        .sidebar {
+            width: 240px;
+            padding: 14px;
+            border-radius: 12px;
+            background: var(--card);
+            min-height: 520px
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600
+        }
+
+        < !-- ✅ HEADER SECTION --><header><div class="logo"><div class="dot"></div><div class="dot"></div><div class="dot"></div><h1>AI Pre-Production Studio</h1></div></header><style> :root {
+            --accent: #7c3aed;
+            /* violet accent */
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            background-color: #1f2937;
+            padding: 1rem 2rem;
+            color: white;
+        }
+
+
+        .logo .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            background: var(--accent);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35)
+        }
+
+        nav {
+            margin-top: 18px
+        }
+
+        nav button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 0;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer
+        }
+
+        nav button.active {
+            background: linear-gradient(90deg, rgba(16, 17, 12, 0.603), rgba(124, 58, 237, 0.05));
+            color: #394757
+        }
+
+        .main {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, var(--glass), var(--glass-2));
+            min-height: 520px
+        }
+
+        .logo .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            background: var(--accent);
+            box-shadow: 0 4px 20px rgba(7, 180, 100, 0.466)
+        }
+
+        .panel {
+            display: none
+        }
+
+        .panel.active {
+            display: block
+        }
+
+        .row {
+            display: flex;
+            gap: 12px
+        }
+
+        .card {
+            background: linear-gradient(180deg, #07121b, #061119);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(128, 177, 13, 0.815)
+        }
+
+        .card.h {
+            height: 220px
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        input[type="file"] {
+            color: transparent
+        }
+
+        .btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 0;
+            background: var(--accent);
+            color: white;
+            cursor: pointer
+        }
+
+        .btn.ghost {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.06)
+        }
+
+        textarea,
+        .editor {
+            width: 100%;
+            min-height: 180px;
+            background: transparent;
+            border: 1px dashed rgba(255, 255, 255, 0.413);
+            padding: 10px;
+            border-radius: 8px;
+            color: inherit
+        }
+
+        .transcript-list {
+            max-height: 300px;
+            overflow: auto;
+            padding: 6px
+        }
+
+        .transcript-item {
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.005));
+            display: flex;
+            justify-content: space-between;
+            gap: 12px
+        }
+
+        .chip {
+            padding: 6px 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.02);
+            font-size: 12px
+        }
+
+        .storyboard-canvas {
+            min-height: 260px;
+            padding: 10px;
+            border: 1px dashed rgba(149, 80, 80, 0.514);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .scene {
+            width: 160px;
+            height: 110px;
+            border-radius: 8px;
+            padding: 8px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            cursor: grab;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between
+        }
+
+        .scene img {
+            width: 100%;
+            height: 64px;
+            object-fit: cover;
+            border-radius: 6px
+        }
+
+        .templates {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .template {
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer
+        }
+
+        .collab-list {
+            max-height: 300px;
+            overflow: auto
+        }
+
+        .task {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.01)
+        }
+
+        footer {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        /* responsive */
+        @media (max-width:900px) {
+            .app {
+                margin: 14px;
+                padding: 12px
+            }
+
+            .sidebar {
+                display: none
+            }
+
+            .row {
+                flex-direction: column
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <header>
+            <div class="logo">
+                <div class="dot"></div>
+                <h1>FilmFoundry AI</h1>
+            </div>
+            <div class="muted">Prototype — client-side features & UI. Replace stubbed AI endpoints with real APIs.</div>
+        </header>
+
+        <div class="flex">
+            <aside class="sidebar card">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                    <div>
+                        <div style="font-size:12px;color:var(--muted)">Project</div>
+                        <div style="font-weight:600">Untitled Documentary</div>
+                    </div>
+                    <div class="chip" id="activeUsers">0 online</div>
+                </div>
+
+                <nav>
+                    <button class="nav-btn active" data-panel="research">Research</button>
+                    <button class="nav-btn" data-panel="transcripts">Transcripts</button>
+                    <button class="nav-btn" data-panel="scripts">Scripts</button>
+                    <button class="nav-btn" data-panel="storyboard">Storyboards</button>
+                    <button class="nav-btn" data-panel="collab">Collaboration</button>
+                    <button class="nav-btn" data-panel="templates">Templates</button>
+                </nav>
+
+                <div style="margin-top:18px">
+                    <div class="muted" style="font-size:13px">Quick Actions</div>
+                    <div style="display:flex;gap:8px;margin-top:8px">
+                        <button class="btn" id="newSceneBtn">+ Scene</button>
+                        <button class="btn ghost" id="exportBtn">Export</button>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="main">
+                <!-- Research -->
+                <section id="research" class="panel active">
+                    <div class="row">
+                        <div class="card" style="flex:1">
+                            <h3>Research Repository</h3>
+                            <div class="muted">Store notes, links, documents. Tag and search.</div>
+                            <div style="margin-top:10px;display:flex;gap:8px">
+                                <input id="noteTitle" placeholder="Note title"
+                                    style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit" />
+                                <button class="btn" id="saveNote">Save</button>
+                            </div>
+                            <textarea id="noteBody"
+                                placeholder="Write research notes, paste links or transcripts snippets..."
+                                style="margin-top:8px"></textarea>
+                        </div>
+
+                        <div class="card" style="width:340px">
+                            <h4>Saved Notes</h4>
+                            <div id="notesList" style="margin-top:8px;max-height:380px;overflow:auto"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Transcripts -->
+                <section id="transcripts" class="panel">
+                    <div class="row">
+                        <div class="card" style="flex:1">
+                            <h3>Transcription Studio</h3>
+                            <div class="muted">Demo supports live mic transcription (Web Speech API). For file uploads,
+                                integrate a backend speech-to-text service.</div>
+                            <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+                                <button class="btn" id="startRec">Start Mic</button>
+                                <button class="btn ghost" id="stopRec">Stop</button>
+                                <label class="btn ghost" for="audioFile">Upload File</label>
+                                <input id="audioFile" type="file" accept="audio/*,video/*" style="display:none" />
+                                <div style="margin-left:auto" class="muted">Recorded: <span id="recTime">0s</span></div>
+                            </div>
+                            <div class="transcript-list" id="transcriptList"></div>
+                        </div>
+
+                        <div class="card" style="width:340px">
+                            <h4>Timestamps & Export</h4>
+                            <div class="muted">Click any transcript chunk to insert into the Script Editor with
+                                timestamp.</div>
+                            <div id="tsList" style="margin-top:8px;max-height:320px;overflow:auto"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Scripts -->
+                <section id="scripts" class="panel">
+                    <h3>Smart Script Editor</h3>
+                    <div class="muted">Write your scenes, then ask the built-in assistant for suggestions (dialogue
+                        polish, scene structure, character checks).</div>
+                    <div style="display:flex;gap:12px;margin-top:10px">
+                        <div style="flex:1">
+                            <textarea id="scriptEditor" class="editor"
+                                placeholder="Write scene: INT. STUDIO - DAY\nCHARACTER: Dialogue..."></textarea>
+                            <div style="display:flex;gap:8px;margin-top:8px">
+                                <button class="btn" id="suggestBtn">Get AI Suggestions</button>
+                                <button class="btn ghost" id="applySuggestion">Apply Top Suggestion</button>
+                                <select id="suggestMode"
+                                    style="background:transparent;border-radius:8px;padding:8px;color:inherit;border:1px solid rgba(255,255,255,0.03)">
+                                    <option value="dialogue">Dialogue polish</option>
+                                    <option value="structure">Scene structure</option>
+                                    <option value="consistency">Character consistency</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="width:360px">
+                            <div class="card" style="margin-bottom:12px">
+                                <h4>Suggestions</h4>
+                                <div id="suggestionsPanel" style="min-height:160px;padding-top:6px"></div>
+                            </div>
+                            <div class="card">
+                                <h4>Script Outline</h4>
+                                <div id="outlinePanel" class="muted" style="min-height:120px;padding-top:6px">
+                                    (Auto-generated outline will appear here)</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Storyboard -->
+                <section id="storyboard" class="panel">
+                    <h3>Visual Storyboard</h3>
+                    <div class="muted">Drag & drop scenes, add notes and frames. Export scene order as JSON or CSV.
+                    </div>
+                    <div style="display:flex;gap:12px;margin-top:10px">
+                        <div style="flex:1">
+                            <div class="storyboard-canvas card" id="canvas"></div>
+                            <div style="display:flex;gap:8px;margin-top:8px">
+                                <input id="newSceneTitle" placeholder="Scene title"
+                                    style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit" />
+                                <input id="newSceneImage" placeholder="Image URL (optional)"
+                                    style="width:260px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit" />
+                                <button class="btn" id="addScene">Add</button>
+                            </div>
+                        </div>
+                        <div style="width:320px">
+                            <div class="card">
+                                <h4>Scene Details</h4>
+                                <div id="sceneDetails" style="min-height:160px" class="muted">Select a scene to edit
+                                    notes.</div>
+                                <div style="margin-top:8px"><button class="btn ghost" id="exportStoryboard">Export
+                                        JSON</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Collaboration -->
+                <section id="collab" class="panel">
+                    <h3>Collaboration</h3>
+                    <div class="muted">Comments, tasks and live presence (demo uses BroadcastChannel across tabs). Open
+                        this app in multiple tabs to simulate multiple users.</div>
+                    <div style="display:flex;gap:12px;margin-top:10px">
+                        <div class="card" style="flex:1">
+                            <h4>Add Task / Comment</h4>
+                            <input id="taskInput" placeholder="Task or comment"
+                                style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit" />
+                            <div style="display:flex;gap:8px;margin-top:8px">
+                                <input id="assignee" placeholder="Assignee"
+                                    style="padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit" />
+                                <button class="btn" id="addTask">Add</button>
+                            </div>
+                            <div class="collab-list" id="tasksList" style="margin-top:12px"></div>
+                        </div>
+                        <div style="width:320px">
+                            <div class="card">
+                                <h4>Active Users</h4>
+                                <div id="presenceList" style="min-height:160px" class="muted"></div>
+                                <div style="margin-top:8px"><button class="btn ghost" id="simulateJoin">Simulate
+                                        Join</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Templates -->
+                <section id="templates" class="panel">
+                    <h3>Genre Templates</h3>
+                    <div class="muted">Quick-start skeletons to bootstrap a project.</div>
+                    <div style="margin-top:10px" class="templates">
+                        <div class="template" data-template="documentary">Documentary — Interviews + B-Roll</div>
+                        <div class="template" data-template="short">Short Film — 3-Act Structure</div>
+                        <div class="template" data-template="podcast">Podcast Series — Episode Template</div>
+                    </div>
+                </section>
+
+                <footer>Note: This frontend demo includes client-side AI heuristics and Web APIs. For production,
+                    connect to server-side AI + speech-to-text services (OpenAI, Whisper, Google STT, AssemblyAI, etc.).
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // ---------- Basic nav setup ----------
+        document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => {
+            document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
+            b.classList.add('active');
+            const panel = b.dataset.panel;
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(panel).classList.add('active');
+        }));
+
+        // ---------- Notes (Research) ----------
+        const notesKey = 'pp_notes_v1';
+        function loadNotes() {
+            const list = document.getElementById('notesList'); list.innerHTML = '';
+            const notes = JSON.parse(localStorage.getItem(notesKey) || '[]');
+            notes.forEach((n, i) => {
+                const el = document.createElement('div'); el.className = 'card'; el.style.marginBottom = '8px';
+                el.innerHTML = `<div style="display:flex;justify-content:space-between"><strong>${escapeHtml(n.title)}</strong><div class="muted">${n.date}</div></div><div class="muted" style="margin-top:6px">${escapeHtml(n.body).slice(0, 200)}${n.body.length > 200 ? '...' : ''}</div><div style="margin-top:8px;display:flex;gap:8px"><button class="btn ghost" data-i="${i}" onclick="loadNote(${i})">Open</button><button class="btn" onclick="deleteNote(${i})">Delete</button></div>`;
+                list.appendChild(el);
+            });
+        }
+        function saveNote() {
+            const title = document.getElementById('noteTitle').value || 'Untitled';
+            const body = document.getElementById('noteBody').value || '';
+            const notes = JSON.parse(localStorage.getItem(notesKey) || '[]');
+            notes.unshift({ title, body, date: new Date().toLocaleString() });
+            localStorage.setItem(notesKey, JSON.stringify(notes));
+            document.getElementById('noteTitle').value = ''; document.getElementById('noteBody').value = '';
+            loadNotes();
+        }
+        function loadNote(i) {
+            const notes = JSON.parse(localStorage.getItem(notesKey) || '[]');
+            const n = notes[i]; document.getElementById('noteTitle').value = n.title; document.getElementById('noteBody').value = n.body;
+        }
+        function deleteNote(i) { const notes = JSON.parse(localStorage.getItem(notesKey) || '[]'); notes.splice(i, 1); localStorage.setItem(notesKey, JSON.stringify(notes)); loadNotes(); }
+        document.getElementById('saveNote').addEventListener('click', saveNote);
+        loadNotes();
+
+        // ---------- Transcription (Mic demo via Web Speech API) ----------
+        let recognizer = null, recStartTime = 0, recInterval = null;
+        const transcriptChunksKey = 'pp_transcripts_v1';
+        function updateRecTime() {
+            const s = Math.floor((Date.now() - recStartTime) / 1000);
+            document.getElementById('recTime').innerText = s + 's';
+        }
+        async function startMic() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('Browser does not support Web Speech API. Use Chrome for demo.'); return;
+            }
+            const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognizer = new SR();
+            recognizer.continuous = true; recognizer.interimResults = true; recognizer.lang = 'en-US';
+            recognizer.onresult = (e) => {
+                for (let i = e.resultIndex; i < e.results.length; i++) {
+                    const res = e.results[i];
+                    const text = res[0].transcript.trim();
+                    const isFinal = res.isFinal;
+                    if (isFinal) { pushTranscript(text); } else {/*we could show interim*/ }
+                }
+            }
+            recognizer.onerror = (e) => console.warn('rec error', e);
+            recognizer.start(); recStartTime = Date.now(); recInterval = setInterval(updateRecTime, 500);
+        }
+        function stopMic() { if (recognizer) recognizer.stop(); clearInterval(recInterval); document.getElementById('recTime').innerText = '0s'; }
+        function pushTranscript(text) {
+            const chunks = JSON.parse(localStorage.getItem(transcriptChunksKey) || '[]');
+            const ts = (Date.now()); chunks.unshift({ text, ts }); localStorage.setItem(transcriptChunksKey, JSON.stringify(chunks)); renderTranscripts();
+        }
+        function renderTranscripts() {
+            const list = document.getElementById('transcriptList'); list.innerHTML = '';
+            const tsList = document.getElementById('tsList'); tsList.innerHTML = '';
+            const chunks = JSON.parse(localStorage.getItem(transcriptChunksKey) || '[]');
+            chunks.forEach((c, i) => {
+                const d = new Date(c.ts);
+                const item = document.createElement('div'); item.className = 'transcript-item';
+                item.innerHTML = `<div><strong>${escapeHtml(c.text.slice(0, 80))}</strong><div class="muted" style="margin-top:6px">${d.toLocaleString()}</div></div><div><button class='btn ghost' onclick='insertToScript(${i})'>Insert</button></div>`;
+                list.appendChild(item);
+                const titem = document.createElement('div'); titem.className = 'card'; titem.style.marginBottom = '8px'; titem.innerHTML = `<div style="display:flex;justify-content:space-between"><div class="muted">${d.toLocaleTimeString()}</div><div><button class='btn ghost' onclick='copyTranscript(${i})'>Copy</button></div></div><div style="margin-top:6px">${escapeHtml(c.text)}</div>`;
+                tsList.appendChild(titem);
+            });
+            document.getElementById('tsList').appendChild(document.createElement('div'));
+        }
+        function copyTranscript(i) { const chunks = JSON.parse(localStorage.getItem(transcriptChunksKey) || '[]'); navigator.clipboard.writeText(chunks[i].text); }
+        function insertToScript(i) {
+            const chunks = JSON.parse(localStorage.getItem(transcriptChunksKey) || '[]'); const editorial = `[${new Date(chunks[i].ts).toLocaleTimeString()}] ${chunks[i].text}\n`;
+            const ed = document.getElementById('scriptEditor'); ed.value = ed.value + '\n' + editorial; document.querySelector('.nav-btn[data-panel="scripts"]').click();
+        }
+        document.getElementById('startRec').addEventListener('click', startMic);
+        document.getElementById('stopRec').addEventListener('click', stopMic);
+        document.getElementById('audioFile').addEventListener('change', (e) => {
+            const file = e.target.files[0]; if (!file) return; // For production: send to server for STT
+            alert('File uploaded: ' + file.name + "\nIn production, you'd send this file to a speech-to-text backend (e.g., Whisper/AssemblyAI) and receive timestamped transcript JSON.");
+        });
+        renderTranscripts();
+
+        // ---------- Script suggestions (local heuristics demo) ----------
+        function getSuggestions(text, mode) {
+            // Basic heuristics to demonstrate suggestions without contacting AI.
+            const suggestions = [];
+            if (mode === 'dialogue') {
+                // simple dialogue polish: replace 'really really' etc.
+                if (/really\s+really/i.test(text)) suggestions.push({ title: 'Reduce repetition', body: 'Avoid repetitive words like "really really" — trim to "really".' });
+                if (/i think/i.test(text)) suggestions.push({ title: 'Strong voice', body: 'Consider using stronger verbs instead of "I think" to make dialogue assertive.' });
+                // break up long monologues
+                if (text.split('\n').filter(l => l.trim()).length > 6) suggestions.push({ title: 'Break the monologue', body: 'This scene contains long monologue lines — consider splitting into beats or adding action lines.' });
+            } else if (mode === 'structure') {
+                // outline suggestion
+                const lines = text.split('\n').slice(0, 40).map(l => l.trim()).filter(Boolean);
+                suggestions.push({ title: 'Scene Outline', 'body': lines.slice(0, 6).map((l, i) => `${i + 1}. ${l}`).join('\n') });
+                if (!/INT\.|EXT\./i) suggestions.push({ title: 'Set location', body: 'Add INT./EXT. slugline at the top of the scene to clarify location/time.' });
+            } else if (mode === 'consistency') {
+                // character name consistency: find all-caps words and check variants
+                const caps = (text.match(/\b[A-Z]{2,}\b/g) || []);
+                const counts = {}; caps.forEach(c => counts[c] = (counts[c] || 0) + 1);
+                const keys = Object.keys(counts);
+                if (keys.length === 0) suggestions.push({ title: 'No character names found', body: 'Use uppercase character names before dialogue (e.g., EVA) to track scenes.' });
+                else { keys.forEach(k => { if (counts[k] > 1) suggestions.push({ title: `Character ${k}`, body: `Found ${counts[k]} occurrences of ${k}. Ensure behaviour and tone remain consistent.` }) }) }
+            }
+            if (suggestions.length === 0) suggestions.push({ title: 'Polish tip', 'body': 'No obvious issues found by local heuristics. For deeper edits, connect to an AI model (server-side) for style-aware rewriting.' });
+            return suggestions;
+        }
+        document.getElementById('suggestBtn').addEventListener('click', () => {
+            const text = document.getElementById('scriptEditor').value;
+            const mode = document.getElementById('suggestMode').value;
+            const s = getSuggestions(text, mode);
+            const panel = document.getElementById('suggestionsPanel'); panel.innerHTML = '';
+            s.forEach((sg, i) => { const el = document.createElement('div'); el.className = 'card'; el.style.marginBottom = '8px'; el.innerHTML = `<strong>${escapeHtml(sg.title)}</strong><div class='muted' style='margin-top:6px'>${escapeHtml(sg.body)}</div><div style='display:flex;gap:8px;margin-top:8px'><button class='btn' onclick='applySuggestionLocal(${i})'>Apply</button><button class='btn ghost' onclick="copyText(${i})">Copy</button></div>`; panel.appendChild(el); });
+            // store latest suggestions
+            window._lastSuggestions = s;
+            // generate outline
+            const outline = document.getElementById('outlinePanel'); outline.innerText = s[0] && s[0].title ? s.map(x => x.title + ": \n" + x.body).join('\n\n') : 'No suggestions.';
+        });
+        function applySuggestionLocal(i) { const s = window._lastSuggestions || []; if (!s[i]) return; document.getElementById('scriptEditor').value += '\n\n// Suggestion: ' + s[i].title + '\n' + s[i].body; }
+        function copyText(i) { const s = window._lastSuggestions || []; navigator.clipboard.writeText(s[i].body || ''); }
+
+        // ---------- Storyboard (drag & drop) ----------
+        const canvas = document.getElementById('canvas'); let scenes = JSON.parse(localStorage.getItem('pp_scenes_v1') || '[]');
+        function renderScenes() {
+            canvas.innerHTML = ''; scenes.forEach((s, i) => {
+                const el = document.createElement('div'); el.className = 'scene'; el.draggable = true; el.dataset.i = i;
+                el.innerHTML = `${s.image ? '<img src="' + escapeAttr(s.image) + '" onerror="this.style.opacity=0.4;this.src=""">' : ''}<div style="font-weight:600">${escapeHtml(s.title)}</div><div style="display:flex;justify-content:space-between;align-items:center"><div class='muted' style='font-size:12px'>${new Date(s.created).toLocaleTimeString()}</div><div style='display:flex;gap:6px'><button class='btn ghost' onclick='editScene(${i})'>Edit</button><button class='btn' onclick='removeScene(${i})'>Del</button></div></div>`;
+                el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', i); el.style.opacity = 0.5 });
+                el.addEventListener('dragend', () => { el.style.opacity = 1 });
+                canvas.appendChild(el);
+            });
+        }
+        canvas.addEventListener('dragover', e => { e.preventDefault(); });
+        canvas.addEventListener('drop', e => {
+            e.preventDefault(); const from = Number(e.dataTransfer.getData('text/plain')); const toIndex = Array.from(canvas.children).length - 1; // append for simplicity
+            // move item to end
+            const item = scenes.splice(from, 1)[0]; scenes.push(item); localStorage.setItem('pp_scenes_v1', JSON.stringify(scenes)); renderScenes();
+        });
+        document.getElementById('addScene').addEventListener('click', () => {
+            const title = document.getElementById('newSceneTitle').value || 'Untitled Scene'; const image = document.getElementById('newSceneImage').value || '';
+            scenes.push({ title, image, created: Date.now(), notes: '' }); localStorage.setItem('pp_scenes_v1', JSON.stringify(scenes)); document.getElementById('newSceneTitle').value = ''; document.getElementById('newSceneImage').value = ''; renderScenes();
+        });
+        function editScene(i) { const s = scenes[i]; const newNotes = prompt('Notes for scene:', '' + (s.notes || '')); if (newNotes !== null) { s.notes = newNotes; localStorage.setItem('pp_scenes_v1', JSON.stringify(scenes)); renderScenes(); document.getElementById('sceneDetails').innerText = newNotes; } }
+        function removeScene(i) { if (!confirm('Delete scene?')) return; scenes.splice(i, 1); localStorage.setItem('pp_scenes_v1', JSON.stringify(scenes)); renderScenes(); }
+        document.getElementById('newSceneBtn').addEventListener('click', () => { document.querySelector('.nav-btn[data-panel="storyboard"]').click(); document.getElementById('newSceneTitle').focus(); });
+        document.getElementById('exportStoryboard').addEventListener('click', () => { const data = JSON.stringify(scenes, null, 2); downloadFile('storyboard.json', data); });
+        renderScenes();
+
+        // ---------- Collaboration (BroadcastChannel demo + local state) ----------
+        const bc = ('BroadcastChannel' in window) ? new BroadcastChannel('pp_channel_v1') : null;
+        const userId = 'User-' + Math.floor(Math.random() * 9000 + 1000);
+        function announcePresence() { if (bc) bc.postMessage({ type: 'presence', user: userId }); updatePresence(userId); }
+        if (bc) {
+            bc.onmessage = (e) => {
+                const d = e.data; if (!d || !d.type) return;
+                if (d.type === 'presence') { addPresence(d.user) }
+                if (d.type === 'task') { receiveTask(d.payload) }
+            }
+        }
+        function updatePresence(me) { const el = document.getElementById('presenceList'); let arr = JSON.parse(localStorage.getItem('pp_presence_v1') || '[]'); arr = arr.filter(x => Date.now() - x.ts < 45000); arr.push({ user: me, ts: Date.now() }); localStorage.setItem('pp_presence_v1', JSON.stringify(arr)); renderPresence(); }
+        function renderPresence() {
+            const el = document.getElementById('presenceList'); const arr = JSON.parse(localStorage.getItem('pp_presence_v1') || '[]'); el.innerHTML = ''; const uniq = {}; arr.forEach(a => uniq[a.user] = a.ts);
+            Object.keys(uniq).forEach(u => { const div = document.createElement('div'); div.innerText = u; el.appendChild(div) });
+            document.getElementById('activeUsers').innerText = Object.keys(uniq).length + ' online';
+        }
+        function addPresence(user) { let arr = JSON.parse(localStorage.getItem('pp_presence_v1') || '[]'); arr.push({ user, ts: Date.now() }); localStorage.setItem('pp_presence_v1', JSON.stringify(arr)); renderPresence(); }
+        setInterval(() => { renderPresence(); }, 5000);
+        announcePresence();
+        document.getElementById('simulateJoin').addEventListener('click', () => { if (bc) bc.postMessage({ type: 'presence', user: 'Guest-' + Math.floor(Math.random() * 999) }) });
+
+        // Tasks
+        const tasksKey = 'pp_tasks_v1'; function loadTasks() { const el = document.getElementById('tasksList'); el.innerHTML = ''; const tasks = JSON.parse(localStorage.getItem(tasksKey) || '[]'); tasks.forEach((t, i) => { const row = document.createElement('div'); row.className = 'task'; row.innerHTML = `<div><strong>${escapeHtml(t.text)}</strong><div class='muted'>${t.assignee} • ${new Date(t.ts).toLocaleString()}</div></div><div><button class='btn ghost' onclick='toggleDone(${i})'>${t.done ? "Undo" : "Done"}</button><button class='btn' onclick='deleteTask(${i})'>Del</button></div>`; el.appendChild(row); }); }
+        function addTask() { const text = document.getElementById('taskInput').value; const assignee = document.getElementById('assignee').value || 'Unassigned'; if (!text) return alert('Enter a task'); const tasks = JSON.parse(localStorage.getItem(tasksKey) || '[]'); const item = { text, assignee, ts: Date.now(), done: false, creator: userId }; tasks.unshift(item); localStorage.setItem(tasksKey, JSON.stringify(tasks)); if (bc) bc.postMessage({ type: 'task', payload: item }); loadTasks(); document.getElementById('taskInput').value = ''; }
+        function receiveTask(t) { const tasks = JSON.parse(localStorage.getItem(tasksKey) || '[]'); tasks.unshift(t); localStorage.setItem(tasksKey, JSON.stringify(tasks)); loadTasks(); }
+        function toggleDone(i) { const tasks = JSON.parse(localStorage.getItem(tasksKey) || '[]'); tasks[i].done = !tasks[i].done; localStorage.setItem(tasksKey, JSON.stringify(tasks)); loadTasks(); }
+        function deleteTask(i) { const tasks = JSON.parse(localStorage.getItem(tasksKey) || '[]'); tasks.splice(i, 1); localStorage.setItem(tasksKey, JSON.stringify(tasks)); loadTasks(); }
+        document.getElementById('addTask').addEventListener('click', addTask); loadTasks();
+
+        // ---------- Templates ----------
+        document.querySelectorAll('.template').forEach(el => el.addEventListener('click', () => {
+            const t = el.dataset.template; if (t === 'documentary') { document.getElementById('scriptEditor').value = 'INT. INTERVIEW ROOM - DAY\n\nNARRATOR: (V.O.) Intro...\n\nINTERVIEWEE: Answer...\n\nB-ROLL: Shots of city, hands, archival.' }
+            if (t === 'short') { document.getElementById('scriptEditor').value = 'ACT 1: Setup\n\nACT 2: Confrontation\n\nACT 3: Resolution' }
+            if (t === 'podcast') { document.getElementById('scriptEditor').value = 'EPISODE TITLE\n\nINTRO: Host greets...\n\nSEGMENT 1: Interview...\n\nOUTRO: CTA' }
+            document.querySelector('.nav-btn[data-panel="scripts"]').click();
+        }));
+
+        // ---------- Utilities ----------
+        function escapeHtml(s) { return String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;'); }
+        function escapeAttr(s) { return String(s).replaceAll('"', '\"').replaceAll("'", "\'"); }
+        function downloadFile(name, content) { const blob = new Blob([content], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+
+        // ---------- Small helpful hints for integration points ----------
+        console.log('Frontend demo loaded — integrate with server-side AI for true transcription & suggestions.');
+    </script>
+</body>
+
+</html>
